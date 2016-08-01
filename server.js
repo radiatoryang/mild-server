@@ -1,6 +1,7 @@
 var net = require('net');
 var sockets = [];
-var port = 8000;
+var ipaddress = process.env.OPENSHIFT_NODEJS_IP || "127.0.0.1";
+var port = process.env.OPENSHIFT_NODEJS_PORT || 8080;
 var guestId = 0;
 
 var server = net.createServer(function(socket) {
@@ -96,7 +97,7 @@ server.on('error', function(error) {
 
 // Listen for a port to telnet to
 // then in the terminal just run 'telnet localhost [port]'
-server.listen(port, function() {
+server.listen(port, ipaddress, function() {
 
 	console.log("Server listening at http://localhost:" + port);
 
