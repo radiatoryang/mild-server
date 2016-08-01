@@ -1,8 +1,42 @@
+var ipaddress = process.env.OPENSHIFT_NODEJS_IP || "127.0.0.1";
+var port = process.env.OPENSHIFT_NODEJS_PORT || 8080;
+var app = require("express");
+var server = require("http").Server(app);
+var io = require("socket.io")(server);
+
+var handleClient = function (socket) {
+    socket.sendUTF("hello");
+    console.log("connect");
+};
+
+io.on("connection", handleClient);
+
+console.log("listen: "+ipaddress+" "+port);
+server.listen(port, ipaddress);
+
+
+
 //Openshift variables
+/*
 var ipaddress = process.env.OPENSHIFT_NODEJS_IP || "127.0.0.1";
 var port = process.env.OPENSHIFT_NODEJS_PORT || 8080;
 
+var ws = require("nodejs-websocket")
+ 
+// Scream server example: "hi" -> "HI!!!" 
+var server = ws.createServer(function (conn) {
+    console.log("New connection")
+    conn.on("text", function (str) {
+        console.log("Received "+str)
+        conn.sendText(str.toUpperCase()+"!!!")
+    })
+    conn.on("close", function (code, reason) {
+        console.log("Connection closed")
+    })
+}).listen(8080)
+*/
 
+/*
 //NodeJS require modules
 var WebSocketServer = require('ws').Server
     wss = new WebSocketServer({host:ipaddress, port:port});
@@ -12,7 +46,7 @@ wss.on('connection', function(ws) {
 });
 
 console.log((new Date()) + " Server is listening on: " + ipaddress + ':' port);
-
+*/
 
 /*
 var net = require('net');
