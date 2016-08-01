@@ -1,3 +1,20 @@
+//Openshift variables
+var ipaddress = process.env.OPENSHIFT_NODEJS_IP || "127.0.0.1";
+var port = process.env.OPENSHIFT_NODEJS_PORT || 8080;
+
+
+//NodeJS require modules
+var WebSocketServer = require('ws').Server
+    wss = new WebSocketServer({host:ipaddress, port:port});
+
+wss.on('connection', function(ws) {
+    console.log((new Date()) + ' Connection from origin: ' + ws._socket.remoteAddress);
+});
+
+console.log((new Date()) + " Server is listening on: " + ipaddress + ':' port);
+
+
+/*
 var net = require('net');
 var sockets = [];
 var ipaddress = process.env.OPENSHIFT_NODEJS_IP || "127.0.0.1";
@@ -19,7 +36,7 @@ var server = net.createServer(function(socket) {
 	// Welcome user to the socket
 	socket.write("Welcome to telnet chat!\n");
 
-	// Broadcast to others excluding this socket
+	// Broadcast to all
 	broadcast(clientName, clientName + ' joined this chat.\n');
 
 
@@ -102,3 +119,5 @@ server.listen(port, ipaddress, function() {
 	console.log("Server listening at http://localhost:" + port);
 
 });
+
+*/
