@@ -19,7 +19,7 @@ server.listen( port, ipaddress, function() {
 
 wss = new WebSocketServer({
     server: server,
-    autoAcceptConnections: false
+    autoAcceptConnections: true
 });
 
 wss.on('connection', function(client) {
@@ -29,6 +29,7 @@ wss.on('connection', function(client) {
   client.send("New connection: " + clientName);
 
   client.on('message', function(data) {
+    client.send(data);
     var message = clientName + '> ' + data.toString();
     broadcast(client, message);
   });
