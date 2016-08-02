@@ -10,7 +10,7 @@ var clients = {};
 var server = http.createServer(function(request, response) {
     console.log((new Date()) + ' Received request for ' + request.url);
 	response.writeHead(200, {'Content-Type': 'text/plain'});
-	  response.write("Welcome to Node.js on OpenShift!\n\n");
+	  response.write("Welcome to this Mild server!");
 	  response.end("Thanks for visiting us! \n");
 });
 
@@ -25,23 +25,41 @@ wss = new WebSocketServer({
 wss.on('connection', function(ws) {
   // Specific id for this client & increment count
   var id = count++;
-  ws.send('you are client ' + id);
-  // Store the connection method so we can loop through & contact all clients
+  // tell everyone about the new player, but NOT the new player yet
+  broadcast('join^' + id);
+   // store new client ID
+  ws.clientID = id;
+  // store new socket in list
   clients[id] = ws;
-  console.log("New connection");
-  // ON SEND
+  // send list of all current clients to you, INCLUDING you
+  ws.send('welcome^' + getClientList() );
+
+  console.log("New connection... current clients: " + getClientList() );
+
+  // ON SEND MESSAGE
   ws.on('message', function(message) {
-    console.log(message);
-    broadcast((new Date()) + " client " + id + " > " + message);
+    console.log((new Date()) + ' client ' + id + ' > ' +  message);
+    broadcast(message);
   });
+
   // DISCONNECT
   ws.on('close', function(reasonCode, description) {
     delete clients[id];
     console.log((new Date()) + ' Client ' + id + ' disconnected.');
+    broadcast('leave^' + id);
   });
 
-  ws.send('Welcome!');
+
 });
+
+function getClientList() {
+  var clientList = "";
+  for(var i in clients){
+      // Send a message to the client with the message
+      clientList += clients[i].clientID + ",";
+  }
+  return clientList;
+}
 
 function broadcast(data) {
   for(var i in clients){
