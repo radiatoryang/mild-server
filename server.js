@@ -4,12 +4,10 @@ var port      = process.env.OPENSHIFT_NODEJS_PORT || 8080;
 var WebSocketServer = require('ws').Server
 var http = require('http');
 
-var playerID = 0;
-
 var server = http.createServer(function(request, response) {
     console.log((new Date()) + ' Received request for ' + request.url);
 	response.writeHead(200, {'Content-Type': 'text/plain'});
-	  response.write("Welcome to the simple Unity game server");
+	  response.write("Welcome to Node.js on OpenShift!\n\n");
 	  response.end("Thanks for visiting us! \n");
 });
 
@@ -19,29 +17,14 @@ server.listen( port, ipaddress, function() {
 
 wss = new WebSocketServer({
     server: server,
-    autoAcceptConnections: true
+    autoAcceptConnections: false
 });
-
-wss.on('connection', function(client) {
-  playerID++;
-  var clientName = "player"+playerID;
-  console.log("New connection: " + clientName);
-  client.send("New connection: " + clientName);
-
-  client.on('message', function(data) {
-    client.send(data);
-    var message = clientName + '> ' + data.toString();
-    broadcast(client, message);
+wss.on('connection', function(ws) {
+  console.log("New connection");
+  ws.on('message', function(message) {
+    ws.send("Received: " + message);
   });
-
+  ws.send('Welcome!');
 });
-
-wss.broadcast = function broadcast(sender, data) {
-  wss.clients.forEach(function each(client) {
-//    if ( sender == client )
-//      return;
-    client.send(data);
-  });
-};
 
 console.log("Listening to " + ipaddress + ":" + port + "...");
