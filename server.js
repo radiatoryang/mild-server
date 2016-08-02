@@ -25,15 +25,23 @@ wss = new WebSocketServer({
 wss.on('connection', function(ws) {
   // Specific id for this client & increment count
   var id = count++;
+  ws.send('you are client ' + id);
   // Store the connection method so we can loop through & contact all clients
   clients[id] = ws;
   console.log("New connection");
   ws.on('message', function(message) {
-    clients.forEach(function each(client) {
-      client.send(message);
-    });
+    for(var i in clients){
+        // Send a message to the client with the message
+        clients[i].send(message);
+    }
   });
+  ws.on('close', function(reasonCode, description) {
+    delete clients[id];
+    console.log((new Date()) + ' Peer ' + connection.remoteAddress + ' disconnected.');
+  });
+
   ws.send('Welcome!');
 });
+
 
 console.log("Listening to " + ipaddress + ":" + port + "...");
