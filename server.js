@@ -31,19 +31,24 @@ wss.on('connection', function(ws) {
   console.log("New connection");
   // ON SEND
   ws.on('message', function(message) {
-    for(var i in clients){
-        // Send a message to the client with the message
-        clients[i].send("client " + id + " > " + message);
-    }
+    console.log(message);
+    broadcast((new Date()) + " client " + id + " > " + message);
   });
   // DISCONNECT
   ws.on('close', function(reasonCode, description) {
     delete clients[id];
-    console.log((new Date()) + ' Peer ' + connection.remoteAddress + ' disconnected.');
+    console.log((new Date()) + ' Client ' + id + ' disconnected.');
   });
 
   ws.send('Welcome!');
 });
+
+wss.broadcast = function broadcast(data) {
+  for(var i in clients){
+      // Send a message to the client with the message
+      clients[i].send(data);
+  }
+};
 
 
 console.log("Listening to " + ipaddress + ":" + port + "...");
