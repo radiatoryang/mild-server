@@ -29,12 +29,14 @@ wss.on('connection', function(ws) {
   // Store the connection method so we can loop through & contact all clients
   clients[id] = ws;
   console.log("New connection");
+  // ON SEND
   ws.on('message', function(message) {
     for(var i in clients){
         // Send a message to the client with the message
-        clients[i].send(message);
+        clients[i].send("client " + id + " > " + message);
     }
   });
+  // DISCONNECT
   ws.on('close', function(reasonCode, description) {
     delete clients[id];
     console.log((new Date()) + ' Peer ' + connection.remoteAddress + ' disconnected.');
