@@ -4,6 +4,9 @@ var port      = process.env.OPENSHIFT_NODEJS_PORT || 8080;
 var WebSocketServer = require('ws').Server
 var http = require('http');
 
+var count = 0;
+var clients = {};
+
 var server = http.createServer(function(request, response) {
     console.log((new Date()) + ' Received request for ' + request.url);
 	response.writeHead(200, {'Content-Type': 'text/plain'});
@@ -20,17 +23,17 @@ wss = new WebSocketServer({
     autoAcceptConnections: false
 });
 wss.on('connection', function(ws) {
+  // Specific id for this client & increment count
+  var id = count++;
+  // Store the connection method so we can loop through & contact all clients
+  clients[id] = ws;
   console.log("New connection");
   ws.on('message', function(message) {
-    broadcast(message);
+    clients.forEach(function each(client) {
+      client.send(message);
+    });
   });
   ws.send('Welcome!');
 });
-
-wss.broadcast = function broadcast(data) {
-  wss.clients.forEach(function each(client) {
-    client.send(data);
-  });
-};
 
 console.log("Listening to " + ipaddress + ":" + port + "...");
