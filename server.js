@@ -43,7 +43,7 @@ wss.on('connection', function(ws) {
   ws.send('Welcome!');
 });
 
-wss.broadcast = function broadcast(data) {
+function broadcast(data) {
   for(var i in clients){
       // Send a message to the client with the message
       clients[i].send(data);
