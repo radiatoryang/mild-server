@@ -37,8 +37,8 @@ wss.on('connection', function(client) {
 
 wss.broadcast = function broadcast(sender, data) {
   wss.clients.forEach(function each(client) {
-    if ( sender == client )
-      return;
+//    if ( sender == client )
+//      return;
     client.send(data);
   });
 };
