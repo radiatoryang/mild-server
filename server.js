@@ -38,7 +38,7 @@ wss.on('connection', function(ws) {
 
   // ON SEND MESSAGE
   ws.on('message', function(message) {
-    console.log((new Date()) + ' client ' + id + ' > ' +  message);
+  //  console.log((new Date()) + ' client ' + id + ' > ' +  message);
     broadcast(message);
   });
 
