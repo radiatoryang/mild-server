@@ -16,7 +16,6 @@ var clients = {};
 // very minimal basic authentication features, so complete randos cannot connect to your server
 // - you should change the username and password
 // - you could bake the username and password into your client, but that's technically insecure
-var useAuthentication = true;
 var authUsername = 'serverUsername';
 var authPassword = 'serverSecretPassword';
 
@@ -24,14 +23,14 @@ var authPassword = 'serverSecretPassword';
 var server = http.createServer(function(request, response) {
     console.log((new Date()) + ' Received request for ' + request.url);
     // if you care, make sure to use https:// + SSL + wss://, or else you're sending your password in plain unencrypted text
-    var credentials = auth(request)
+    var credentials = auth(request);
     // authentication is enabled, and username or password were wrong
-    if (useAuthentication && ( !credentials || credentials.name !== authUsername || credentials.pass !== authPassword ) ) {
+    if ( !credentials || credentials.name !== authUsername || credentials.pass !== authPassword ) {
       console.log((new Date()) + ' auth denied for ' + credentials.name + "/" + credentials.pass);
-      response.statusCode = 401
-      response.setHeader('WWW-Authenticate', 'Basic realm="server"')
-      response.end('Access denied')
-    } else { // no authentication, or username and password were correct
+//      response.statusCode = 401
+//      response.setHeader('WWW-Authenticate', 'Basic realm="server"')
+//      response.end('Access denied')
+    } else { // username and password were correct
       response.writeHead(200, {'Content-Type': 'text/plain'});
       response.write("Welcome to this Mild server!");
       response.end("Thanks for playing! \n");
