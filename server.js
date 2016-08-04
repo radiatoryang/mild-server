@@ -2,7 +2,7 @@
 //var port      = process.env.OPENSHIFT_NODEJS_PORT || 8080;
 
 var port      = process.env.PORT || 3000;
-var ipaddress = process.env.IP || "127.0.0.1";
+//var ipaddress = process.env.IP || "127.0.0.1";
 
 var WebSocketServer = require('ws').Server
 var http = require('http');
@@ -17,7 +17,7 @@ var server = http.createServer(function(request, response) {
 	  response.end("Thanks for visiting us! \n");
 });
 
-server.listen( port, ipaddress, function() {
+server.listen( port, function() {
     console.log((new Date()) + ' Server is listening on port 3000');
 });
 
