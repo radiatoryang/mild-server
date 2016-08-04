@@ -1,5 +1,7 @@
-var ipaddress = process.env.OPENSHIFT_NODEJS_IP || "127.0.0.1";
-var port      = process.env.OPENSHIFT_NODEJS_PORT || 8080;
+//var ipaddress = process.env.OPENSHIFT_NODEJS_IP || "127.0.0.1";
+//var port      = process.env.OPENSHIFT_NODEJS_PORT || 8080;
+
+var port      = process.env.port || 5000;
 
 var WebSocketServer = require('ws').Server
 var http = require('http');
@@ -69,4 +71,4 @@ function broadcast(data) {
 };
 
 
-console.log("Listening to " + ipaddress + ":" + port + "...");
+console.log("Listening to port " + port + "...");
