@@ -67,8 +67,11 @@ function getClientList() {
 function broadcast(sender, data) {
   for(var i in clients){
       // Send a message to the client with the message
-      if ( i.clientID != sender.clientID )
-      clients[i].send(data);
+      if ( i == sender ) {
+
+      } else {
+        clients[i].send(data);
+      }
   }
 };
 
