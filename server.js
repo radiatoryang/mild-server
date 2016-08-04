@@ -24,9 +24,10 @@ var authPassword = 'serverSecretPassword';
 var server = http.createServer(function(request, response) {
     console.log((new Date()) + ' Received request for ' + request.url);
     // if you care, make sure to use https:// + SSL + wss://, or else you're sending your password in plain unencrypted text
-    var credentials = auth(req)
+    var credentials = auth(request)
     // authentication is enabled, and username or password were wrong
-    if (useAuthentication && ( !credentials || credentials.name !== authUsername || credentials.pass !== playerSecretPassword ) ) {
+    if (useAuthentication && ( !credentials || credentials.name !== authUsername || credentials.pass !== authPassword ) ) {
+      console.log((new Date()) + ' auth denied for ' + credentials.name + "/" + credentials.pass);
       response.statusCode = 401
       response.setHeader('WWW-Authenticate', 'Basic realm="server"')
       response.end('Access denied')
