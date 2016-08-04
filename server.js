@@ -29,7 +29,7 @@ wss.on('connection', function(ws) {
   // Specific id for this client & increment count
   var id = count++;
   // tell everyone about the new player, but NOT the new player yet
-  broadcast('join^' + id.toString() );
+  broadcast("newjoin^" + id.toString() );
    // store new client ID
   ws.clientID = id;
   // store new socket in list
@@ -38,6 +38,8 @@ wss.on('connection', function(ws) {
   ws.send('welcome^' + getClientList() );
 
   console.log("New connection... current clients: " + getClientList() );
+
+
 
   // ON SEND MESSAGE
   ws.on('message', function(message) {
