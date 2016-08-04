@@ -42,14 +42,14 @@ wss.on('connection', function(ws) {
   // ON SEND MESSAGE
   ws.on('message', function(message) {
   //  console.log((new Date()) + ' client ' + id + ' > ' +  message);
-    broadcast(message);
+    broadcast(ws, message);
   });
 
   // DISCONNECT
   ws.on('close', function(reasonCode, description) {
     delete clients[id];
     console.log((new Date()) + ' Client ' + id + ' disconnected.');
-    broadcast('leave^' + id);
+    broadcast(ws, 'leave^' + id);
   });
 
 
@@ -64,9 +64,10 @@ function getClientList() {
   return clientList;
 }
 
-function broadcast(data) {
+function broadcast(sender, data) {
   for(var i in clients){
       // Send a message to the client with the message
+      if ( i.clientID != sender.clientID )
       clients[i].send(data);
   }
 };
