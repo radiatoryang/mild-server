@@ -27,7 +27,8 @@
     "express": "~3.4.4",
 	   "socket.io" : "0.9.16",
 	    "ws" : "0.4.31",
-      "bufferutil" : "1.2.1"
+      "bufferutil" : "1.2.1",
+      "basic-auth" : "1.0.4"
   },
 
   "devDependencies": {},
