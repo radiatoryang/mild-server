@@ -26,7 +26,7 @@
   "dependencies": {
   "express": ">=3.11.0",
 	   "socket.io" : "0.9.16",
-	    "ws" : "0.4.31",
+	   "ws": ">=1.1.1",
       "bufferutil" : "1.2.1",
       "basic-auth" : "1.0.4"
   },
